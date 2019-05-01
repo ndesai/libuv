@@ -65,7 +65,7 @@
 # include "uv/bsd.h"
 #elif defined(__CYGWIN__) || defined(__MSYS__)
 # include "uv/posix.h"
-#elif defined(__GNU__)
+#elif defined(__GNU__) || defined(QNX)
 # include "uv/posix.h"
 #endif
 

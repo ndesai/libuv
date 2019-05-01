@@ -55,8 +55,6 @@ set(uv_test_sources
     test/test-fs.c
     test/test-fs-readdir.c
     test/test-get-currentexe.c
-    test/test-get-loadavg.c
-    test/test-get-memory.c
     test/test-get-passwd.c
     test/test-getaddrinfo.c
     test/test-gethostname.c
@@ -97,7 +95,6 @@ set(uv_test_sources
     test/test-pipe-server-close.c
     test/test-pipe-set-fchmod.c
     test/test-pipe-set-non-blocking.c
-    test/test-platform-output.c
     test/test-poll-close-doesnt-corrupt-stack.c
     test/test-poll-close.c
     test/test-poll-closesocket.c
@@ -175,6 +172,14 @@ set(uv_test_sources
     test/test-walk-handles.c
     test/test-watcher-cross-stop.c)
 
+if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL "QNX")
+    list(APPEND uv_test_sources
+        test/test-get-loadavg.c
+        test/test-get-memory.c
+        test/test-platform-output.c
+    )
+endif()
+
 if(WIN32)
   list(APPEND uv_defines WIN32_LEAN_AND_MEAN _WIN32_WINNT=0x0600)
   list(APPEND uv_libraries
@@ -215,7 +220,7 @@ if(WIN32)
   list(APPEND uv_test_sources src/win/snprintf.c test/runner-win.c)
 else()
   list(APPEND uv_defines _FILE_OFFSET_BITS=64 _LARGEFILE_SOURCE)
-  if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+  if(NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android" AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "QNX" )
     # Android has pthread as part of its c library, not as a separate
     # libpthread.so.
     list(APPEND uv_libraries pthread)
@@ -260,8 +265,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Android")
        src/unix/linux-syscalls.c
        src/unix/procfs-exepath.c
        src/unix/pthread-fixes.c
-       src/unix/sysinfo-loadavg.c
-       src/unix/sysinfo-memory.c)
+       src/unix/sysinfo-loadavg.c)
+#       src/unix/sysinfo-memory.c)
 endif()
 
 if(APPLE OR CMAKE_SYSTEM_NAME MATCHES "Android|Linux|OS/390")
@@ -289,7 +294,7 @@ if(APPLE)
        src/unix/fsevents.c)
 endif()
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   list(APPEND uv_defines _GNU_SOURCE _POSIX_C_SOURCE=200112)
   list(APPEND uv_libraries dl rt)
   list(APPEND uv_sources
@@ -298,6 +303,19 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
        src/unix/linux-syscalls.c
        src/unix/procfs-exepath.c
        src/unix/sysinfo-loadavg.c)
+endif()
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "QNX")
+    list(APPEND uv_defines __EXT_BSD)
+    list(APPEND uv_defines _QNX_SOURCE)
+  list(APPEND uv_libraries socket)
+  list(APPEND uv_sources
+       src/unix/bsd-ifaddrs.c
+       src/unix/no-fsevents.c
+       src/unix/no-proctitle.c
+       src/unix/posix-hrtime.c
+       src/unix/posix-poll.c
+       src/unix/procfs-exepath.c)
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "NetBSD")

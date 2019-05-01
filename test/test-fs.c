@@ -31,7 +31,7 @@
 /* FIXME we shouldn't need to branch in this file */
 #if defined(__unix__) || defined(__POSIX__) || \
     defined(__APPLE__) || defined(__sun) || \
-    defined(_AIX) || defined(__MVS__)
+    defined(_AIX) || defined(__MVS__) || defined(QNX)
 #include <unistd.h> /* unlink, rmdir, etc. */
 #else
 # include <winioctl.h>

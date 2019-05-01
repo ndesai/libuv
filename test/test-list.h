@@ -21,7 +21,9 @@
 
 #include "uv.h"
 
+#ifndef QNX
 TEST_DECLARE   (platform_output)
+#endif
 TEST_DECLARE   (callback_order)
 TEST_DECLARE   (close_order)
 TEST_DECLARE   (run_once)
@@ -196,7 +198,9 @@ TEST_DECLARE   (timer_null_callback)
 TEST_DECLARE   (timer_early_check)
 TEST_DECLARE   (idle_starvation)
 TEST_DECLARE   (loop_handles)
+#ifndef QNX
 TEST_DECLARE   (get_loadavg)
+#endif
 TEST_DECLARE   (walk_handles)
 TEST_DECLARE   (watcher_cross_stop)
 TEST_DECLARE   (ref)
@@ -238,7 +242,9 @@ TEST_DECLARE   (get_currentexe)
 TEST_DECLARE   (process_title)
 TEST_DECLARE   (process_title_threadsafe)
 TEST_DECLARE   (cwd_and_chdir)
+#ifndef QNX
 TEST_DECLARE   (get_memory)
+#endif
 TEST_DECLARE   (get_passwd)
 TEST_DECLARE   (handle_fileno)
 TEST_DECLARE   (homedir)
@@ -473,8 +479,9 @@ TEST_DECLARE  (utf8_decode1)
 TEST_DECLARE  (uname)
 
 TASK_LIST_START
+#ifndef QNX
   TEST_ENTRY_CUSTOM (platform_output, 0, 1, 5000)
-
+#endif
 #if 0
   TEST_ENTRY  (callback_order)
 #endif
@@ -550,13 +557,13 @@ TASK_LIST_START
 
   TEST_ENTRY  (tcp_ping_pong_vec)
   TEST_HELPER (tcp_ping_pong_vec, tcp4_echo_server)
-
+#ifndef QNX
   TEST_ENTRY  (tcp6_ping_pong)
   TEST_HELPER (tcp6_ping_pong, tcp6_echo_server)
 
   TEST_ENTRY  (tcp6_ping_pong_vec)
   TEST_HELPER (tcp6_ping_pong_vec, tcp6_echo_server)
-
+#endif
   TEST_ENTRY  (pipe_ping_pong)
   TEST_HELPER (pipe_ping_pong, pipe_echo_server)
 
@@ -624,13 +631,13 @@ TASK_LIST_START
 
   TEST_ENTRY  (tcp_read_stop)
   TEST_HELPER (tcp_read_stop, tcp4_echo_server)
-
+#ifndef QNX
   TEST_ENTRY  (tcp_bind6_error_addrinuse)
   TEST_ENTRY  (tcp_bind6_error_addrnotavail)
   TEST_ENTRY  (tcp_bind6_error_fault)
   TEST_ENTRY  (tcp_bind6_error_inval)
   TEST_ENTRY  (tcp_bind6_localhost_ok)
-
+#endif
   TEST_ENTRY  (udp_alloc_cb_fail)
   TEST_ENTRY  (udp_bind)
   TEST_ENTRY  (udp_bind_reuseaddr)
@@ -763,12 +770,12 @@ TASK_LIST_START
 
   TEST_ENTRY  (cwd_and_chdir)
 
+  TEST_ENTRY  (get_passwd)
+#ifndef QNX
   TEST_ENTRY  (get_memory)
 
-  TEST_ENTRY  (get_passwd)
-
   TEST_ENTRY  (get_loadavg)
-
+#endif
   TEST_ENTRY  (handle_fileno)
 
   TEST_ENTRY  (homedir)
