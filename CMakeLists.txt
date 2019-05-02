@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.0)
 project(libuv)
 enable_testing()
 
+message("CMAKE_SYSTEM_NAME: " ${CMAKE_SYSTEM_NAME})
+
 if(MSVC)
   list(APPEND uv_cflags /W4)
 elseif(CMAKE_C_COMPILER_ID MATCHES "AppleClang|Clang|GNU")
